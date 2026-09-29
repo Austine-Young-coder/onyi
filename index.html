@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love Letter 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+  --rose: #ff4d6d;
+  --rose-dark: #c9184a;
+  --rose-light: #ff8fa3;
+  --cream: #fff1f2;
+  --paper: #fffaf3;
+  --paper-line: #f5d0d5;
+  --ink: #5c2b3a;
+  --gold: #e8b04b;
+  --shadow: rgba(92, 43, 58, 0.25);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, #ffe5ec 0%, #ffc2d1 40%, #ff8fa3 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.scene {
+  width: 100%;
+  max-width: 900px;
+  padding: 2rem 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.screen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.8s ease both;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Floating hearts background ---------- */
+.floating-hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.float-heart {
+  position: absolute;
+  bottom: -60px;
+  font-size: 1.4rem;
+  opacity: 0.5;
+  animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.7);
+    opacity: 0;
+  }
+  
+  15% {
+    opacity: 0.55;
+  }
+  
+  100% {
+    transform: translateY(-110vh) rotate(30deg) scale(1.1);
+    opacity: 0;
+  }
+}
+
+/* ---------- Intro ---------- */
+.intro-eyebrow {
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--rose-dark);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.intro-title {
+  font-family: "Dancing Script", cursive;
+  font-size: clamp(2.8rem, 8vw, 5rem);
+  color: var(--rose-dark);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 3px 12px rgba(201, 24, 74, 0.2);
+}
+
+.intro-sub {
+  font-size: 1rem;
+  color: var(--ink);
+  opacity: 0.85;
+  margin-bottom: 2rem;
+}
+
+/* ---------- Envelope ---------- */
+.envelope {
+  position: relative;
+  width: min(320px, 82vw);
+  height: 210px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+  z-index: 2;
+}
+
+.envelope:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #ffd7de, #ffb3c1);
+  border-radius: 12px;
+  box-shadow: 0 18px 35px var(--shadow);
+}
+
+.letter-preview {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 84%;
+  height: 120px;
+  background: var(--paper);
+  transform: translateX(-50%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s ease, bottom 0.6s ease;
+  z-index: 1;
+}
+
+.preview-seal {
+  font-size: 2rem;
+}
+
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%);
+  background: linear-gradient(160deg, #ffb3c1, #ff8fa3);
+  border-radius: 12px;
+  z-index: 3;
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.35);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 105px;
+  background: linear-gradient(180deg, #ff8fa3, #ff758f);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.6s ease, z-index 0.6s ease;
+  z-index: 4;
+  border-radius: 12px 12px 0 0;
+}
+
+.envelope-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 70%;
+  height: 22px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(92, 43, 58, 0.35), transparent 70%);
+  z-index: 0;
+}
+
+.envelope.open .letter-preview {
+  transform: translateX(-50%) translateY(-160px);
+  bottom: auto;
+  z-index: 2;
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope.open .envelope-front {
+  z-index: 3;
+}
+
+.hint {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: var(--rose-dark);
+  opacity: 0.8;
+}
+
+/* ---------- Letter screen ---------- */
+.letter-screen {
+  position: relative;
+  gap: 1.5rem;
+}
+
+.letter-paper {
+  position: relative;
+  width: min(560px, 94vw);
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow: 0 24px 50px var(--shadow);
+  padding: 2.5rem 2rem 2rem;
+  background-image: repeating-linear-gradient(to bottom,
+      transparent,
+      transparent 30px,
+      var(--paper-line) 31px);
+  animation: unfold 0.8s ease both;
+}
+
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: scale(0.85) rotate(-2deg);
+  }
+  
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  border: none;
+  background: transparent;
+  font-size: 1.8rem;
+  color: var(--rose-dark);
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.close-btn:hover {
+  transform: rotate(90deg) scale(1.2);
+}
+
+.letter-inner {
+  font-size: 0.98rem;
+  line-height: 1.9;
+}
+
+.letter-date {
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rose-dark);
+  margin-bottom: 1rem;
+}
+
+.letter-greeting {
+  font-family: "Dancing Script", cursive;
+  font-size: 2rem;
+  color: var(--rose-dark);
+  margin-bottom: 1rem;
+}
+
+.letter-body p {
+  margin-bottom: 1rem;
+}
+
+.letter-question {
+  text-align: center;
+  font-weight: 600;
+  color: var(--rose-dark);
+  margin-top: 1.5rem;
+}
+
+.letter-signature {
+  margin-top: 2rem;
+  text-align: right;
+  font-style: italic;
+}
+
+.signature-name {
+  font-family: "Dancing Script", cursive;
+  font-size: 1.6rem;
+  color: var(--rose-dark);
+  font-style: normal;
+}
+
+/* ---------- Question card ---------- */
+.question-card {
+  width: min(420px, 92vw);
+  background: rgba(255, 250, 243, 0.95);
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 20px 45px var(--shadow);
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.question-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.4rem;
+  color: var(--rose-dark);
+}
+
+.question-sub {
+  font-size: 0.9rem;
+  margin: 0.4rem 0 1.5rem;
+  opacity: 0.8;
+}
+
+.question-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 58px;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.85rem 1.8rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, font-size 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(201, 24, 74, 0.35);
+}
+
+.btn-no {
+  background: #f7dfe4;
+  color: var(--rose-dark);
+  box-shadow: 0 8px 18px rgba(92, 43, 58, 0.15);
+}
+
+.plea {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--rose-dark);
+  min-height: 1.4em;
+  font-style: italic;
+}
+
+/* ---------- Celebration ---------- */
+.celebration-screen {
+  position: relative;
+}
+
+.celebration-card {
+  width: min(520px, 94vw);
+  background: rgba(255, 250, 243, 0.96);
+  border-radius: 22px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 28px 60px var(--shadow);
+  position: relative;
+  z-index: 2;
+  animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.big-heart {
+  font-size: 4rem;
+  animation: heartbeat 1.2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  
+  25% {
+    transform: scale(1.15);
+  }
+  
+  40% {
+    transform: scale(1);
+  }
+  
+  60% {
+    transform: scale(1.1);
+  }
+}
+
+.celebration-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.5rem;
+  color: var(--rose-dark);
+  margin: 1rem 0;
+  line-height: 1.2;
+}
+
+.celebration-text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.celebration-sign {
+  font-style: italic;
+  margin-bottom: 2rem;
+  color: var(--rose-dark);
+}
+
+.btn-restart {
+  background: linear-gradient(135deg, var(--gold), #d4942b);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(212, 148, 43, 0.35);
+}
+
+/* ---------- Confetti ---------- */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  top: -20px;
+  width: 12px;
+  height: 18px;
+  opacity: 0.9;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0.4;
+  }
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  padding: 1rem;
+  font-size: 0.8rem;
+  color: var(--rose-dark);
+  opacity: 0.8;
+  text-align: center;
+  z-index: 1;
+}
+
+@media (max-width: 480px) {
+  .letter-paper {
+    padding: 2rem 1.2rem 1.5rem;
+  }
+  
+  .question-buttons {
+    gap: 0.6rem;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.3rem;
+  }
+}
+  </style>
+</head>
+
+<body>
+  <div class="floating-hearts" id="floatingHearts" aria-hidden="true"></div>
+  
+  <main class="scene">
+    <!-- Intro -->
+    <section class="screen intro-screen" id="introScreen">
+      <p class="intro-eyebrow">Someone has a secret to tell you…</p>
+      <h1 class="intro-title">A Letter for You</h1>
+      <p class="intro-sub">Tap the envelope to open your heart</p>
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the love letter">
+        <div class="envelope-back"></div>
+        <div class="letter-preview" id="letterPreview">
+          <span class="preview-seal">💗</span>
+        </div>
+        <div class="envelope-front" id="envelopeFront"></div>
+        <div class="envelope-flap" id="envelopeFlap"></div>
+        <div class="envelope-shadow"></div>
+      </div>
+      <p class="hint">click or tap ✨</p>
+    </section>
+    
+    <!-- Letter -->
+    <section class="screen letter-screen hidden" id="letterScreen">
+      <article class="letter-paper" id="letterPaper">
+        <button class="close-btn" id="closeLetter" aria-label="Close letter">×</button>
+        <div class="letter-inner">
+          <p class="letter-date">For the one who makes my days brighter</p>
+          <h2 class="letter-greeting">Hi Onyinye,</h2>
+          <div class="letter-body">
+            <p>I've been trying to find the right words, but every time I see you, they all disappear. So I wrote them down instead — hoping my heart can speak where my voice cannot.</p>
+            <p>There is something about the way you smile that turns an ordinary moment into my favorite memory. You don't just light up a room; you light up something in me.</p>
+            <p>I like you. Not just a little, and not just for now. I like the way you laugh, the way you care, and the way my whole world feels softer when you're in it.</p>
+            <p class="letter-question">So… I have to ask you something.</p>
+          </div>
+          <p class="letter-signature">Forever yours,<br /><span class="signature-name">Your Ami  💘</span></p>
+        </div>
+      </article>
+      
+      <div class="question-card hidden" id="questionCard">
+        <h2 class="question-title">May i court you?</h2>
+        <p class="question-sub">Choose from your heart ❤️</p>
+        <div class="question-buttons">
+          <button class="btn btn-yes" id="yesBtn">Yes 💖</button>
+          <button class="btn btn-no" id="noBtn">No 💔</button>
+        </div>
+        <p class="plea" id="pleaText"></p>
+      </div>
+    </section>
+    
+    <!-- Celebration -->
+    <section class="screen celebration-screen hidden" id="celebrationScreen">
+      <div class="celebration-card">
+        <div class="big-heart">💖</div>
+        <h2 class="celebration-title">You Just Made Me<br />the Happiest Person Alive!</h2>
+        <p class="celebration-text">This is only the beginning of something beautiful. I promise to make you smile, to listen, to show up, and to choose you — every single day.</p>
+        <p class="celebration-sign">— Yours, now and always 💍</p>
+        <button class="btn btn-restart" id="restartBtn">Read the letter again 💌</button>
+      </div>
+      <div class="confetti-container" id="confettiContainer" aria-hidden="true"></div>
+    </section>
+  </main>
+  
+  <footer class="footer">
+    <p>Made with 💗 just for you</p>
+  </footer>
+  
+  <script>// ---------- Element references ----------
+const envelope = document.getElementById("envelope");
+const envelopeFlap = document.getElementById("envelopeFlap");
+const letterPreview = document.getElementById("letterPreview");
+const introScreen = document.getElementById("introScreen");
+const letterScreen = document.getElementById("letterScreen");
+const letterPaper = document.getElementById("letterPaper");
+const questionCard = document.getElementById("questionCard");
+const celebrationScreen = document.getElementById("celebrationScreen");
+const closeLetter = document.getElementById("closeLetter");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const pleaText = document.getElementById("pleaText");
+const restartBtn = document.getElementById("restartBtn");
+const confettiContainer = document.getElementById("confettiContainer");
+const floatingHearts = document.getElementById("floatingHearts");
+
+// ---------- Floating background hearts ----------
+const HEART_EMOJIS = ["💗", "💖", "💘", "💕", "💝", "❤️", "🌸"];
+
+function spawnFloatingHeart() {
+  const heart = document.createElement("span");
+  heart.className = "float-heart";
+  heart.textContent =
+    HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+  heart.style.left = `${Math.random() * 100}%`;
+  heart.style.fontSize = `${0.9 + Math.random() * 1.4}rem`;
+  heart.style.animationDuration = `${5 + Math.random() * 6}s`;
+  floatingHearts.appendChild(heart);
+  
+  heart.addEventListener("animationend", () => heart.remove());
+}
+
+setInterval(spawnFloatingHeart, 700);
+for (let i = 0; i < 6; i++) {
+  setTimeout(spawnFloatingHeart, i * 250);
+}
+
+// ---------- Envelope opening ----------
+let letterOpened = false;
+
+function openEnvelope() {
+  if (letterOpened) return;
+  letterOpened = true;
+  
+  envelope.classList.add("open");
+  
+  // After the flap animation, swap to the letter screen.
+  setTimeout(() => {
+    introScreen.classList.add("hidden");
+    letterScreen.classList.remove("hidden");
+    letterPaper.classList.remove("hidden");
+    
+    // Reveal the question after the letter has had a moment to be read.
+    setTimeout(() => {
+      questionCard.classList.remove("hidden");
+    }, 2400);
+  }, 700);
+}
+
+envelope.addEventListener("click", openEnvelope);
+envelope.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    openEnvelope();
+  }
+});
+
+// ---------- Close letter (return to intro) ----------
+function closeLetterAndReset() {
+  letterOpened = false;
+  questionCard.classList.add("hidden");
+  letterScreen.classList.add("hidden");
+  introScreen.classList.remove("hidden");
+  envelope.classList.remove("open");
+  resetNoButton();
+  pleaText.textContent = "";
+}
+
+closeLetter.addEventListener("click", closeLetterAndReset);
+
+// ---------- The "No" button that keeps running away ----------
+const noMessages = [
+  "Are you sure? 🥺",
+  "Think again, please… 🥺",
+  "Don't break my heart 💔",
+  "Really really sure? 😢",
+  "My heart can't take this 💔",
+  "Give love a chance 🥺",
+  "You're just being shy, right? 😉",
+  "I'll cry a little… 💧",
+  "Last chance, my love 💘",
+  "Okay but the button moved for a reason 😌",
+];
+
+let noClicks = 0;
+let yesScale = 1;
+
+function resetNoButton() {
+  noClicks = 0;
+  yesScale = 1;
+  yesBtn.style.transform = "";
+  noBtn.style.transform = "";
+  noBtn.textContent = "No 💔";
+}
+
+noBtn.addEventListener("click", () => {
+  noClicks += 1;
+  
+  // Show a plea message.
+  pleaText.textContent =
+    noMessages[Math.min(noClicks - 1, noMessages.length - 1)];
+  
+  // Make the Yes button bigger with every refusal.
+  yesScale += 0.25;
+  yesBtn.style.transform = `scale(${yesScale})`;
+  
+  // Move the No button to a random position within the question card.
+  const cardRect = questionCard.getBoundingClientRect();
+  const maxX = Math.max(cardRect.width - noBtn.offsetWidth - 20, 20);
+  const maxY = Math.max(cardRect.height - noBtn.offsetHeight - 20, 20);
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+  
+  noBtn.style.position = "absolute";
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+  
+  // After a few attempts, start shrinking the No button.
+  if (noClicks >= 3) {
+    const scale = Math.max(1 - noClicks * 0.08, 0.45);
+    noBtn.style.transform = `scale(${scale})`;
+  }
+  
+  if (noClicks >= 8) {
+    noBtn.textContent = "Just say Yes 😌";
+  }
+});
+
+// Make sure the question card can contain the absolutely positioned button.
+questionCard.style.position = "relative";
+
+// ---------- Yes -> Celebration ----------
+yesBtn.addEventListener("click", () => {
+  letterScreen.classList.add("hidden");
+  celebrationScreen.classList.remove("hidden");
+  launchConfetti();
+});
+
+function launchConfetti() {
+  const colors = [
+    "#ff4d6d",
+    "#ff8fa3",
+    "#ffd166",
+    "#e8b04b",
+    "#ffb3c1",
+    "#c9184a",
+    "#ffccd5",
+  ];
+  
+  for (let i = 0; i < 120; i++) {
+    const piece = document.createElement("span");
+    piece.className = "confetti";
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = `${2.5 + Math.random() * 3}s`;
+    piece.style.animationDelay = `${Math.random() * 1.5}s`;
+    piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+    confettiContainer.appendChild(piece);
+    
+    piece.addEventListener("animationend", () => piece.remove());
+  }
+}
+
+// ---------- Restart ----------
+restartBtn.addEventListener("click", () => {
+  confettiContainer.innerHTML = "";
+  celebrationScreen.classList.add("hidden");
+  introScreen.classList.remove("hidden");
+  letterOpened = false;
+  envelope.classList.remove("open");
+  resetNoButton();
+  pleaText.textContent = "";
+});</script>
+</body>
+
+</html>
